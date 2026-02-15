@@ -1,5 +1,5 @@
 import express from 'express';
-import { dbConnect } from '../config/db.js';
+import { dbConnect } from './config/db.js';
 
 const app = express();
 const PORT = 4000;
