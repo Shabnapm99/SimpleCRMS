@@ -1,4 +1,5 @@
 import UserModel from "../models/UserModel.js"
+import bcrypt from 'bcrypt';
 
 //get users
 
@@ -39,16 +40,25 @@ export const getAUser = async (req, res) => {
 
 export const addUser = async (req, res) => {
     try {
-        const user = req.body;
+        const {name,email,password_hash,username,role} = req.body;
         //to check whether the suer is alredy existing
-        const isExisting = await UserModel.findOne({ email: user.email })
+        const isExisting = await UserModel.findOne({ email: email })
         if (isExisting) {
             return res.status(400).json({ message: "User already exist with this email" })
         }
-        await UserModel.create(user)
+        let salt = await bcrypt.genSalt(10);
+        let hashedPassword = await bcrypt.hash(password_hash, salt)
+        await UserModel.create(
+            {
+                name,
+                email,
+                role,
+                username,
+                password_hash:hashedPassword
+            }
+        )
         res.status(201).json({
             message: "User created successfully",
-            user
         })
 
     } catch (error) {
@@ -76,7 +86,6 @@ export const deleteUser = async (req, res) => {
             error: error.message
         })
     }
-
 }
 
 //update a user
