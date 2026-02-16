@@ -2,6 +2,7 @@ import UserModel from "../models/UserModel.js";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import CasesModel from "../models/CasesModel.js";
 
 dotenv.config();
 
@@ -22,4 +23,10 @@ export const login = async (req, res) => {
     } else {
         return res.status(400).json({ msg: "The provided email or password is not matching" })
     }
+}
+
+export const profile = async (req,res)=>{
+    const user = req.user.toObject(); // convert to plain JS object
+    let cases = await CasesModel.find({assigned_to:user._id})
+   res.status(200).json({user:{...user,casesAssigned:cases}})
 }
