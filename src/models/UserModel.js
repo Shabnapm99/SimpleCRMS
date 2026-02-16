@@ -5,14 +5,17 @@ const userSchema = new Schema({
         type: String,
         required: true,
         minLength: 3,
-        maxLength: 20,
+        maxLength: 50,
         trim:true,
+        
     },
     email:{
         type: String,
         required: true,
         minLength: 3,
         trim:true,
+        unique:true,
+        lowercase:true
     },
     username: {
         type: String,
@@ -28,8 +31,8 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        required:true,
-        trim:true
+        enum: ["ADMIN", "AGENT"],
+        default:"AGENT"
     }
 },
 {timestamps:true}

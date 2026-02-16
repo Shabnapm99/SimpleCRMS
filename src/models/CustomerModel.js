@@ -26,6 +26,8 @@ const customerSchema = new Schema({
         required: true,
         minLength: 3,
         trim: true,
+        enum: ["ACTIVE", "INACTIVE"],//enum is used to restrict a field to a fixed set of allowed values.
+        default:"ACTIVE"
     },
 
 },

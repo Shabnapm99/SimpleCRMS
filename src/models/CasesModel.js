@@ -3,15 +3,28 @@
 import mongoose, { Schema } from "mongoose";
 
 const casesSchema = new Schema({
+    customer_id: {
+        type: mongoose.Schema.Types.ObjectId,//This field will store the _id of another MongoDB collection document.(customer id in this case)store a reference to another collection.
+        ref: "Customer",//ref in Mongoose specifies the model that an ObjectId references, enabling relationships between collections and allowing population of related documents.
+        required: true,
+    },
+    assigned_to: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    },
     priority: {
         type: String,
-        required: true
+        enum: ["LOW", "MEDIUM", "HIGH"],
+        default: "LOW",
     },
     status: {
         type: String,
+        enum: ["OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"],
+        default: "OPEN",
+    },
+    description: {
+        type: String,
         required: true,
-        minLength: 3,
-        trim: true,
     },
 
 },
